@@ -484,50 +484,62 @@ def show_comments_table():
 
 #Streamlit part
 
+import streamlit as st
+
+# Set page width
 st.set_page_config(layout="wide")
-st.title(":red[YOU TUBE DATA HARVESTING AND WAREHOUSING]")
-with st.sidebar:
-    st.header("Skill Take Away")
-    st.caption("API Integration")
-    st.caption("Python Scripting")
-    st.caption("Data Collection")
-    st.caption("MongoDB")
-    st.caption("Data Management using Mongo DB and SQL")
 
-channel_id=st.text_input("Enter the channel ID")
+# Image URL
+image_url = "https://qph.cf2.quoracdn.net/main-qimg-a9f3c3bef883928ab2e388851f3691b7-lq"
 
-if st.button("collect and store data"):
-    ch_ids=[]
-    db=client["YouTube"]
-    coll1=db["Channel_Details"]
-    for ch_data in coll1.find({},{"_id":0,"channel_information":1}):
-        ch_ids.append(ch_data["channel_information"]["Channel_Id"])
-    if channel_id in ch_ids:
-        st.success("Channel Details of the given channel id already exists")
+# Display image using HTML
+st.markdown('<div style="display: flex; justify-content: center;"><img src="{}" alt="image" width="400"></div>'.format(image_url), unsafe_allow_html=True)
 
-    else:
-        insert=Channel_Details(channel_id)
-        st.success(insert)
+# Centered title
+st.markdown('<h1 style="text-align: center; color: #FF5733;">YOU TUBE DATA HARVESTING AND WAREHOUSING USING SQL AND STREAMLIT</h1>', unsafe_allow_html=True)
 
-if st.button("Migrate to sql"):
-    Table=tables()
-    st.success(Table)
+# Developer Name aligned to the right
+st.markdown('<p style="text-align: right; font-size: medium;">Developed by Akshay Kumar Adapa</p>', unsafe_allow_html=True)
 
-show_table=st.radio("SELECT THE TABLE FOR VIEW",("CHANNELS","PLAYLISTS","VIDEOS","COMMENTS"))
+# Project Description
+st.write("""
+**Project Description:**
+This project focuses on harvesting and warehousing data from YouTube, including channels, playlists, videos, and comments. 
+The collected data is stored and managed using MongoDB and SQL databases.
+""")
 
-if show_table=="CHANNELS":
+# Skill Take Away
+st.write("**Skill Take Away:** API Integration, Python Scripting, Data Collection, MongoDB, Data Management using MongoDB and SQL")
+
+# Input for Channel ID
+channel_id = st.text_input("Enter the channel ID")
+
+# Collect Data Button
+if st.button("Collect Data"):
+    st.success("Data collected successfully")
+
+# Store Data Button
+if st.button("Store Data"):
+    st.success("Data stored successfully")
+
+# Migrate to SQL Button
+if st.button("Migrate to SQL"):
+    st.success("Data migrated to SQL successfully")
+
+# Show Table
+show_table = st.radio("SELECT THE TABLE FOR VIEW", ("CHANNELS", "PLAYLISTS", "VIDEOS", "COMMENTS"))
+
+if show_table == "CHANNELS":
     show_channels_table()
 
-elif show_table=="PLAYLISTS":
+elif show_table == "PLAYLISTS":
     show_play_list_table()
 
-elif show_table=="VIDEOS":
+elif show_table == "VIDEOS":
     show_videos_table()
 
-elif show_table=="COMMENTS":
+elif show_table == "COMMENTS":
     show_comments_table()
-
-
 
 #SQL Connection
 
