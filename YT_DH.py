@@ -481,14 +481,9 @@ def show_comments_table():
 
     return df3
 
-
 #Streamlit part
 
-import streamlit as st
-
-# Set page width
 st.set_page_config(layout="wide")
-
 # Image URL
 image_url = "https://qph.cf2.quoracdn.net/main-qimg-a9f3c3bef883928ab2e388851f3691b7-lq"
 
@@ -516,6 +511,16 @@ channel_id = st.text_input("Enter the channel ID")
 
 # Collect Data Button
 if st.button("Collect Data"):
+    ch_ids=[]
+    db=client["YouTube"]
+    coll1=db["Channel_Details"]
+    for ch_data in coll1.find({},{"_id":0,"channel_information":1}):
+        ch_ids.append(ch_data["channel_information"]["Channel_Id"])
+    if channel_id in ch_ids:
+        st.success("Channel Details of the given channel id already exists")
+    else:
+        insert=Channel_Details(channel_id)
+        st.success(insert)
     st.success("Data collected successfully")
 
 # Store Data Button
@@ -524,8 +529,9 @@ if st.button("Store Data"):
 
 # Migrate to SQL Button
 if st.button("Migrate to SQL"):
-    st.success("Data migrated to SQL successfully")
-
+    Table=tables()
+    st.success(Table)
+    
 # Show Table
 show_table = st.radio("SELECT THE TABLE FOR VIEW", ("CHANNELS", "PLAYLISTS", "VIDEOS", "COMMENTS"))
 
